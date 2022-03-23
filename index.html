@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-03-23 Wed 09:16 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vue.js CheatSheet</title>
+<meta name="author" content="[[https://alhassy.github.io/][Musa Al-hassy]]" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+</style>
+<link href="https://alhassy.github.io/org-notes-style.css" rel="stylesheet" type="text/css" />
+<link href="https://alhassy.github.io/floating-toc.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Vue.js CheatSheet</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#Hello-World">1. <a href="#Hello-World">Hello World!</a></a></li>
+<li><a href="#Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow">2. <a href="#Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow">Vue.js makes HTML into a language with variables and control flow</a></a></li>
+</ul>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="outline-container-Hello-World" class="outline-2">
+<h2 id="Hello-World"><span class="section-number-2">1.</span> <a href="#Hello-World">Hello World!</a></h2>
+<div class="outline-text-2" id="text-Hello-World">
+<p>
+Vue.js enhances HTML by giving it a <i>dynamic</i> layer; i.e., raw HTML just
+displays things, but with Vue.js we can have parts shown according to, say,
+input boxes and variables (which raw HTML does not have).
+[See also the <a href="https://alhassy.github.io/JavaScriptCheatSheet/CheatSheet.pdf">JavaScriptCheatSheet</a> PDF.]
+</p>
+
+<p>
+<i>An example is worth a thousand words!</i>
+</p>
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #b58900;">html</span> &gt;
+  <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">&#10216;0&#10217; Actually load Vue.js </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+  &lt;<span style="color: #b58900;">script</span> <span style="color: #268bd2;">src</span>=<span style="color: #2aa198;">"https://unpkg.com/vue@3"</span>&gt;&lt;/<span style="color: #b58900;">script</span>&gt;
+  &lt;<span style="color: #b58900;">body</span>&gt;
+      &lt;<span style="color: #b58900;">div</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"hello"</span>&gt;  <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">&#10216;1&#10217; Vue.js is active for this div; see &#10216;4&#10217; </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+
+          <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">&#10216;2&#10217; The *value* of this text box </span><span style="color: #96A7A9; font-style: italic; text-decoration: underline;">is named</span><span style="color: #96A7A9; font-style: italic;"> &#8220;yourName&#8221; </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+          &lt;<span style="color: #b58900;">input</span> <span style="color: #268bd2;">v-model</span>=<span style="color: #2aa198;">"yourName"</span> <span style="color: #268bd2;">placeholder</span>=<span style="color: #2aa198;">"Enter a name here"</span>&gt;
+
+          <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">&#10216;3&#10217; Actually use the &#8220;yourName&#8221; value here,</span>
+<span style="color: #96A7A9; font-style: italic;">               *whenever* it </span><span style="color: #96A7A9; font-style: italic; text-decoration: underline;">is updated</span><span style="color: #96A7A9; font-style: italic;">! </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+          &lt;<span style="color: #b58900;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Hello {{yourName.toUpperCase()}}!</span>&lt;/<span style="color: #b58900;">h1</span>&gt;
+      &lt;/<span style="color: #b58900;">div</span>&gt;
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">&#10216;4&#10217; Setup the associated model for &#8220;#hello&#8221; </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">script</span>&gt;
+       let myApp = Vue.createApp({
+           data() {
+               return {
+                   yourName: 'Jason'
+               }
+           }
+       }).mount('#hello')
+
+       // Here, we can perform complex logic (JS code) on &#8220;myApp.yourName&#8221;.
+       // Vue.js automatically keeps the HTML view and the JS model in sync.
+       myApp.yourName = 'Jasim'
+      &lt;/<span style="color: #b58900;">script</span>&gt;
+  &lt;/<span style="color: #b58900;">body</span>&gt;
+&lt;/<span style="color: #b58900;">html</span>&gt;
+</pre>
+</div>
+
+<p>
+This is a <i>self-contained</i> <b>interactive</b> program: Whenever the input box's value is
+changed then so is the greeting header “Hello &#x2026;!”.
+</p>
+
+<p>
+Bindings like <code>{{this}}</code> are known as <i><a href="https://github.com/janl/mustache.js#templates">mustache</a> tags, which tell Vue.js that it
+should evaluate an <a href="https://docs.angularjs.org/guide/expression">expression</a></i> and insert the result into the DOM in place of
+the binding. Rather than a one-time insert, a binding will result in efficient
+continuous updates whenever the result of the expression evaluation changes.
+</p>
+
+<p>
+Finally, Vue.js is <i>reactive</i>: If you open your browser's console, and evaluate
+<code>myApp.yourName = 'Bob'</code>, then the HTML view changes!
+</p>
+
+<p>
+<i>Exercise!</i> Using <code>&lt;input type="number" ...&gt;</code>, make a super simple site with two
+input boxes for numbers and a header that shows their sum whenever a user inputs
+values. (<i>Hint!</i> Use <code>Number(x)</code> to convert a string <code>x</code> to a number.)
+</p>
+
+<ul class="org-ul">
+<li>A page can be associated with multiple Vue.js apps, and
+the <code>id</code>-dentifier attribute specifies which HTML element
+views an app.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow" class="outline-2">
+<h2 id="Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow"><span class="section-number-2">2.</span> <a href="#Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow">Vue.js makes HTML into a language with variables and control flow</a></h2>
+<div class="outline-text-2" id="text-Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow">
+<p>
+Vue.js enhances HTML with variables, filters (explained below), arrays, JSON
+Objects, and looping &amp; conditional control flow &#x2014;using JS's usual <code>&amp;&amp;, ||, ==,</code>
+etc for Booleans.  Later we'll see that functions can be defined in an
+associated <i>controller,</i> then used in the <i>view</i>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #b58900;">html</span>&gt;
+  &lt;<span style="color: #b58900;">script</span> <span style="color: #268bd2;">src</span>=<span style="color: #2aa198;">"https://unpkg.com/vue@3"</span>&gt;&lt;/<span style="color: #b58900;">script</span>&gt;
+  &lt;<span style="color: #b58900;">body</span>&gt;
+    &lt;<span style="color: #b58900;">div</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"app"</span>&gt;
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">VARIABLES [Not reccommended, better use &#8220;data&#8221; below.] --------------</span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">Let's declare a var, but hide the resulting value from view </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">p</span> hidden&gt;  {{  love = 'JavaScript'  }}  &lt;/<span style="color: #b58900;">p</span>&gt;
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">Use the variable </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      {{ love + " is cool" }} &lt;<span style="color: #b58900;">br</span>&gt; &lt;<span style="color: #b58900;">br</span>&gt;
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">APPLICATION: Keeping count. Definitions are in &#8220;data&#8221; and &#8220;methods&#8221; below. </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">button</span> <span style="color: #d33682; font-style: italic;">v-on</span>:<span style="color: #268bd2;">click</span>=<span style="color: #2aa198;">"increment"</span>&gt;        Increment      &lt;/<span style="color: #b58900;">button</span>&gt;
+      Count: {{count}}
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">ARRAYS &amp; JSON OBJECTS ------------------------------------------------------</span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">Lets make an array of objects ... </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      {{  people = [ {name: 'kathy', age: 32}
+                   , {name: 'bob', age: 12}
+                   , {name: 'jasim', age: 114}
+                   ]  }}
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">APPLICATION: Search box, searching by name ---------------------------</span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">br</span>&gt; Search: &lt;<span style="color: #b58900;">input</span> <span style="color: #268bd2;">v-model</span>=<span style="color: #2aa198;">"query"</span> <span style="color: #268bd2;">placeholder</span>=<span style="color: #2aa198;">"Search by name"</span> /&gt;
+      &lt;<span style="color: #b58900;">br</span>&gt; Results: {{ people.filter(p =&gt; p.name.includes(this.query.toLowerCase())) }}
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">LOOPING -----------------------------------------------------</span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">No more hardcoded lists! </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">v-for creates a &lt;li&gt; element for each element in the list,</span>
+<span style="color: #96A7A9; font-style: italic;">           using the &lt;li&gt; tag as the template. </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+        &lt;<span style="color: #b58900;">ul</span>&gt;
+            &lt;<span style="color: #b58900;">li</span> <span style="color: #268bd2;">v-for</span>=<span style="color: #2aa198;">"p in people"</span>&gt;
+                {{p.name + ' is ' + p.age + ' years old!' }}
+            &lt;/<span style="color: #b58900;">li</span>&gt;
+        &lt;/<span style="color: #b58900;">ul</span>&gt;
+
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">CONDITIONALS ------------------------------------------------</span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">Name this inputs box's value &#8216;age&#8217; </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">input</span> <span style="color: #268bd2;">type</span>=<span style="color: #2aa198;">"number"</span> <span style="color: #268bd2;">v-model</span>=<span style="color: #2aa198;">"age"</span> <span style="color: #268bd2;">placeholder</span>=<span style="color: #2aa198;">"Your age"</span>&gt;
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">&#8220;Hello&#8221; </span><span style="color: #96A7A9; font-style: italic; text-decoration: underline;">is shown</span><span style="color: #96A7A9; font-style: italic;"> whenever the above &#8216;age&#8217; input is truthy/non-zero. </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">p</span> <span style="color: #268bd2;">type</span>=<span style="color: #2aa198;">"text"</span> <span style="color: #268bd2;">v-if</span>=<span style="color: #2aa198;">"age"</span>&gt; Hello! &lt;/<span style="color: #b58900;">p</span>&gt;
+      <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">This input box shows only if the above, &#8216;age&#8217;, has value 12. </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+      &lt;<span style="color: #b58900;">input</span> <span style="color: #268bd2;">type</span>=<span style="color: #2aa198;">"text"</span> <span style="color: #268bd2;">v-if</span>=<span style="color: #2aa198;">"age == 12"</span> <span style="color: #268bd2;">placeholder</span>=<span style="color: #2aa198;">"Your name?"</span>&gt;
+
+    &lt;/<span style="color: #b58900;">div</span>&gt;
+    <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">The model for the above content. </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+    &lt;<span style="color: #b58900;">script</span>&gt;
+     let app = Vue.createApp({
+         data() {
+             return { count: 0
+                    , query: ''
+                    , age: ''
+                    , people: []
+             }
+         },
+        methods: {
+            increment: function () {this.count++}
+        }
+     }).mount('#app')
+    &lt;/<span style="color: #b58900;">script</span>&gt;
+
+    <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">PUTTING IT ALL TOGETHER: A </span><span style="color: #cc9393; font-style: italic;">TODO</span><span style="color: #96A7A9; font-style: italic;"> APP IN &#8776;30 LINES -------------------------------</span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+    &lt;<span style="color: #b58900;">hr</span>&gt;
+    &lt;<span style="color: #b58900;">div</span> <span style="color: #268bd2;">id</span>=<span style="color: #2aa198;">"todo-app"</span>&gt;
+      &lt;<span style="color: #b58900;">input</span> <span style="color: #268bd2;">placeholder</span>=<span style="color: #2aa198;">"Enter a new </span><span style="color: #cc9393;">TODO</span><span style="color: #2aa198;"> item and press ENTER"</span> <span style="color: #268bd2;">size</span>=<span style="color: #2aa198;">"40"</span>
+             <span style="color: #268bd2;">v-model</span>=<span style="color: #2aa198;">"newTodo"</span> <span style="color: #d33682; font-style: italic;">v-on</span>:<span style="color: #268bd2;">keyup.enter</span>=<span style="color: #2aa198;">"addTodo"</span>&gt;
+      &lt;<span style="color: #b58900;">ul</span>&gt;
+        &lt;<span style="color: #b58900;">li</span> <span style="color: #268bd2;">v-for</span>=<span style="color: #2aa198;">"(todo, index) in todos"</span>&gt;
+          &lt;<span style="color: #b58900;">span</span>&gt; {{ todo.text }} &lt;/<span style="color: #b58900;">span</span>&gt;
+          &lt;<span style="color: #b58900;">button</span> <span style="color: #d33682; font-style: italic;">v-on</span>:<span style="color: #268bd2;">click</span>=<span style="color: #2aa198;">"removeTodo(index)"</span>&gt;X&lt;/<span style="color: #b58900;">button</span>&gt;
+        &lt;/<span style="color: #b58900;">li</span>&gt;
+      &lt;/<span style="color: #b58900;">ul</span>&gt;
+    <span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">Always refers to whatever is CURRENTLY the first item in &#8220;todos&#8221;. </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span>
+    &lt;<span style="color: #b58900;">a</span> :href=`https://www.google.com/search?q=${todos[0].text}`&gt;I'm feeling lucky!&lt;/<span style="color: #b58900;">a</span>&gt;
+    &lt;/<span style="color: #b58900;">div</span>&gt;
+    &lt;<span style="color: #b58900;">script</span>&gt;
+     Vue.createApp({
+         data() {
+             return { new<img src="data:image/svg;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMTYuMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDov
+L3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5
+L3hsaW5rIj4gPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjE2LjIiIHg9IjAuMCIgeT0iMC4wIiBy
+eD0iMy4wIiBmaWxsPSIjODU5OTAwIj48L3JlY3Q+IDx0ZXh0IHk9IjEyIiB4PSI2LjAiIGZpbGw9
+IiNmZGY2ZTMiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI2MDAiIGZvbnQtZmFtaWx5PSJT
+b3VyY2UgQ29kZSBQcm8iPiBUb2RvPC90ZXh0Pjwvc3ZnPg==" alt="Todo:" /><img src="data:image/svg;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMTYuMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDov
+L3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5
+L3hsaW5rIj4gPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjE2LjIiIHg9Ii04LjAiIHk9IjAiIHJ4
+PSIzIiBmaWxsPSIjODU5OTAwIj48L3JlY3Q+IDxyZWN0IHdpZHRoPSIzMCIgaGVpZ2h0PSIxNC4y
+IiB4PSItNy4wIiB5PSIxLjAiIHJ4PSIyLjAiIGZpbGw9IiNmZGY2ZTMiPjwvcmVjdD4gPHRleHQg
+eT0iMTIiIHg9IjQuMCIgZmlsbD0iIzg1OTkwMCIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9
+IjQwMCIgZm9udC1mYW1pbHk9IlNvdXJjZSBDb2RlIFBybyI+ICcnPC90ZXh0Pjwvc3ZnPg==" alt=" ''" />
+                    , todos: [ { text: 'Add <span style="text-decoration: underline;">some</span> todos' } ]
+                    }
+         },
+         methods: {
+             addTodo () {
+                 var text = this.newTodo.trim()
+                 if (text) {
+                     this.todos.push({ text })
+                     this.newTodo = ''
+                 }
+             },
+             removeTodo (index) {
+                 this.todos.splice(index, 1)
+             }
+         }
+     }).mount('#todo-app')
+    &lt;/<span style="color: #b58900;">script</span>&gt;
+  &lt;/<span style="color: #b58900;">body</span>&gt;
+&lt;/<span style="color: #b58900;">html</span>&gt;
+</pre>
+</div>
+
+<p>
+<code class="src src-html"><span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">VARIABLES </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span></code> To let users interact with your app,
+use the <code class="src src-emacs-lisp">v-on</code> directive to attach event listeners.
+In our case, we have a variable whose value increases with each user click.
+</p>
+
+<p>
+Note that arbitrary JS expressions will not be evaluated in moustaches; for
+that, we use the <code class="src src-emacs-lisp">methods</code> object when declaring
+our app. Then, in that method we do our arbitrary JS and that method is the one
+we <i>can</i> call in moustaches (within our div).
+</p>
+
+<p>
+<code class="src src-html"><span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">LOOPING </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span></code> We are using the HTML tags of
+<code class="src src-emacs-lisp">&lt;ul&gt;</code> (Unordered List) and <code class="src src-emacs-lisp">&lt;li&gt;</code> (List Item) to display the list of items in our array. The <code>v-for</code>
+<i>optionally</i> has a second argument, to refer to the looping index; <a href="https://vuejs.org/guide/essentials/list.html#v-for">it can also</a>
+destructure its argument, loop over a single object's value-key pairs, and loop
+over ranges.
+</p>
+
+<p>
+<code class="src src-html"><span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #96A7A9; font-style: italic;">CONDITIONALS </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span></code>
+When the condition to <code class="src src-emacs-lisp">v-if</code> is falsy, the HTML
+element is removed from the DOM; otherwise it's added to the DOM.
+In contrast, <code class="src src-emacs-lisp">v-show</code> merely turns off the display.
+(<a href="https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show"><code>v-if</code> vs <code>v-show</code></a>)
+</p>
+
+<p>
+<code class="src src-html"><span style="color: #96A7A9; font-style: italic;">&lt;!-- </span><span style="color: #cc9393; font-style: italic;">TODO</span><span style="color: #96A7A9; font-style: italic;"> APP. v-bind:&#119987; &#8776; :&#119987; </span><span style="color: #96A7A9; font-style: italic;">--&gt;</span></code>
+Vue.js provides HTML directives that “already exist” but <i>know how to evaluate
+expressions</i>; e.g., <code class="src src-C">&lt;a href=<span style="color: #2aa198;">"{{expr}}"</span>&gt;Go<span style="color: #268bd2; font-weight: bold;">!</span>&lt;/a&gt;</code> would <i>not</i>
+evaluate <code class="src src-emacs-lisp">expr</code>, for that we use <code>&lt;a v-bind:href=`${expr}`&gt;Go!&lt;/a&gt;</code>
+<b>with backticks</b> (ES6 templates). Since <code class="src src-emacs-lisp">v-bind:</code> is
+so useful, there is a brief alias: <code class="src src-emacs-lisp">&lt;a <span style="color: #d33682; font-style: italic;">:href=</span>`${expr}`&gt;Go!&lt;/a&gt;</code>.
+</p>
+
+<p>
+( <a href="https://docs.w3cub.com/vue~3/guide/migration/filters">Filters are removed from Vue 3.0 and no longer supported.</a> )
+</p>
+
+
+<p>
+<i>Exercise!</i> Get a twitter handle from the user and show a link to that twitter page.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: <a href="https://alhassy.github.io/">Musa Al-hassy</a></p>
+<p class="date">Created: 2022-03-23 Wed 09:16</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
