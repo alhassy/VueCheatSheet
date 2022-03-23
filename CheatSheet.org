@@ -1,0 +1,1019 @@
+* Header                                                             :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: Header
+  :END:
+#+TITLE: Vue.js CheatSheet
+# +SUBTITLE: ---Reference Sheet for “What I'm Currently Learning”---
+#+MACRO: blurb A reference for the accessible JS framework that gives HTML: {{Variables}}, Conditionals, Loops, etc!
+#+AUTHOR: [[https://alhassy.github.io/][Musa Al-hassy]]
+#+EMAIL: alhassy@gmail.com
+# +TODO: Todo | spacing LaTeX
+#+INCLUDE: ~/CheatSheet/CheatSheetSetup.org
+# +OPTIONS: broken-links:auto toc:nil
+# let's always break newlines, with a ‘↪’ indicated new lines.
+#+LaTeX: \setminted[html]{fontsize=\footnotesize, breaklines}
+#+EXPORT_FILE_NAME: index.html
+# blog:header
+#+TOC: headlines 2
+
+* Hello World!
+  :PROPERTIES:
+  :CUSTOM_ID: Hello-World
+  :END:
+
+#+HTML_HEAD: <link href="https://alhassy.github.io/org-notes-style.css" rel="stylesheet" type="text/css" />
+#+HTML_HEAD: <link href="https://alhassy.github.io/floating-toc.css" rel="stylesheet" type="text/css" />
+
+
+# AngularJS is a JavaScript framework that operates on the client side and is used
+# to develop web applications.  Web development is one of the most preferred and
+# cost-effective ways to create distributed applications.  The deployment done
+# once on one machine can be made accessible to all the users on the world wide
+# web.
+
+  Vue.js enhances HTML by giving it a /dynamic/ layer; i.e., raw HTML just
+  displays things, but with Vue.js we can have parts shown according to, say,
+  input boxes and variables (which raw HTML does not have).
+  [See also the [[https://alhassy.github.io/JavaScriptCheatSheet/CheatSheet.pdf][JavaScriptCheatSheet]] PDF.]
+
+  # jQuery is a more verbose alternative.
+
+  /An example is worth a thousand words!/
+  #+begin_src html :tangle del/index.html
+<html >
+  <!-- ⟨0⟩ Actually load Vue.js -->
+  <script src="https://unpkg.com/vue@3"></script>
+  <body>
+      <div id="hello">  <!-- ⟨1⟩ Vue.js is active for this div; see ⟨4⟩ -->
+
+          <!-- ⟨2⟩ The *value* of this text box is named “yourName” -->
+          <input v-model="yourName" placeholder="Enter a name here">
+
+          <!-- ⟨3⟩ Actually use the “yourName” value here,
+               *whenever* it is updated! -->
+          <h1>Hello {{yourName.toUpperCase()}}!</h1>
+      </div>
+
+      <!-- ⟨4⟩ Setup the associated model for “#hello” -->
+      <script>
+       let myApp = Vue.createApp({
+           data() {
+               return {
+                   yourName: 'Jason'
+               }
+           }
+       }).mount('#hello')
+
+       // Here, we can perform complex logic (JS code) on “myApp.yourName”.
+       // Vue.js automatically keeps the HTML view and the JS model in sync.
+       myApp.yourName = 'Jasim'
+      </script>
+  </body>
+</html>
+#+end_src
+
+This is a /self-contained/ *interactive* program: Whenever the input box's value is
+changed then so is the greeting header “Hello ...!”.
+
+Bindings like ~{{this}}~ are known as /[[https://github.com/janl/mustache.js#templates][mustache]] tags, which tell Vue.js that it
+should evaluate an [[https://docs.angularjs.org/guide/expression][expression]]/ and insert the result into the DOM in place of
+the binding. Rather than a one-time insert, a binding will result in efficient
+continuous updates whenever the result of the expression evaluation changes.
+
+Finally, Vue.js is /reactive/: If you open your browser's console, and evaluate
+~myApp.yourName = 'Bob'~, then the HTML view changes!
+
+/Exercise!/ Using ~<input type="number" ...>~, make a super simple site with two
+input boxes for numbers and a header that shows their sum whenever a user inputs
+values. (/Hint!/ Use ~Number(x)~ to convert a string ~x~ to a number.)
+
+#+latex: \columnbreak
+
++ A page can be associated with multiple Vue.js apps, and
+  the ~id~-dentifier attribute specifies which HTML element
+  views an app.
+
+* Vue.js makes HTML into a language with variables and control flow
+CLOSED: [2022-03-23 Wed 08:57]
+  :PROPERTIES:
+  :CUSTOM_ID: Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow
+  :END:
+
+# In essence, Vue.js is a language itself.
+# It /extends/ HTML while continuing to support JS.
+
+Vue.js enhances HTML with variables, filters (explained below), arrays, JSON
+Objects, and looping & conditional control flow ---using JS's usual ~&&, ||, ==,~
+etc for Booleans.  Later we'll see that functions can be defined in an
+associated /controller,/ then used in the /view/.
+# As with HTML+JS, functions can be defined
+# within src_html[:exports code]{<script>} tags.
+
+# +latex: {\color{white} hello}
+
+#+latex: \vspace{-2em}
+#+begin_src html :tangle del/index.html
+<html>
+  <script src="https://unpkg.com/vue@3"></script>
+  <body>
+    <div id="app">
+
+      <!-- VARIABLES [Not reccommended, better use “data” below.] ---------------->
+      <!-- Let's declare a var, but hide the resulting value from view -->
+      <p hidden>  {{  love = 'JavaScript'  }}  </p>
+      <!-- Use the variable -->
+      {{ love + " is cool" }} <br> <br>
+
+      <!-- APPLICATION: Keeping count. Definitions are in “data” and “methods” below. -->
+      <button v-on:click="increment">        Increment      </button>
+      Count: {{count}}
+
+      <!-- ARRAYS & JSON OBJECTS -------------------------------------------------------->
+      <!-- Lets make an array of objects ... -->
+      {{  people = [ {name: 'kathy', age: 32}
+                   , {name: 'bob', age: 12}
+                   , {name: 'jasim', age: 114}
+                   ]  }}
+
+      <!-- APPLICATION: Search box, searching by name ----------------------------->
+      <br> Search: <input v-model="query" placeholder="Search by name" />
+      <br> Results: {{ people.filter(p => p.name.includes(this.query.toLowerCase())) }}
+
+      <!-- LOOPING ------------------------------------------------------->
+      <!-- No more hardcoded lists! -->
+      <!-- v-for creates a <li> element for each element in the list,
+           using the <li> tag as the template. -->
+        <ul>
+            <li v-for="p in people">
+                {{p.name + ' is ' + p.age + ' years old!' }}
+            </li>
+        </ul>
+
+      <!-- CONDITIONALS -------------------------------------------------->
+      <!-- Name this inputs box's value ‘age’ -->
+      <input type="number" v-model="age" placeholder="Your age">
+      <!-- “Hello” is shown whenever the above ‘age’ input is truthy/non-zero. -->
+      <p type="text" v-if="age"> Hello! </p>
+      <!-- This input box shows only if the above, ‘age’, has value 12. -->
+      <input type="text" v-if="age == 12" placeholder="Your name?">
+
+    </div>
+    <!-- The model for the above content. -->
+    <script>
+     let app = Vue.createApp({
+         data() {
+             return { count: 0
+                    , query: ''
+                    , age: ''
+                    , people: []
+             }
+         },
+        methods: {
+            increment: function () {this.count++}
+        }
+     }).mount('#app')
+    </script>
+
+    <!-- PUTTING IT ALL TOGETHER: A TODO APP IN ≈30 LINES --------------------------------->
+    <hr>
+    <div id="todo-app">
+      <input placeholder="Enter a new TODO item and press ENTER" size="40"
+             v-model="newTodo" v-on:keyup.enter="addTodo">
+      <ul>
+        <li v-for="(todo, index) in todos">
+          <span> {{ todo.text }} </span>
+          <button v-on:click="removeTodo(index)">X</button>
+        </li>
+      </ul>
+    <!-- Always refers to whatever is CURRENTLY the first item in “todos”. -->
+    <a :href=`https://www.google.com/search?q=${todos[0].text}`>I'm feeling lucky!</a>
+    </div>
+    <script>
+     Vue.createApp({
+         data() {
+             return { newTodo: ''
+                    , todos: [ { text: 'Add some todos' } ]
+                    }
+         },
+         methods: {
+             addTodo () {
+                 var text = this.newTodo.trim()
+                 if (text) {
+                     this.todos.push({ text })
+                     this.newTodo = ''
+                 }
+             },
+             removeTodo (index) {
+                 this.todos.splice(index, 1)
+             }
+         }
+     }).mount('#todo-app')
+    </script>
+  </body>
+</html>
+#+end_src
+
+# file:///Users/weever/Desktop/learning/vars.html
+
+# To run some code when an element is clicked, we use src_emacs-lisp[:exports code]{v-on:click}.
+src_html[:exports code]{<!-- VARIABLES -->} To let users interact with your app,
+use the src_emacs-lisp[:exports code]{v-on} directive to attach event listeners.
+In our case, we have a variable whose value increases with each user click.
+
+Note that arbitrary JS expressions will not be evaluated in moustaches; for
+that, we use the src_emacs-lisp[:exports code]{methods} object when declaring
+our app. Then, in that method we do our arbitrary JS and that method is the one
+we /can/ call in moustaches (within our div).
+
+src_html[:exports code]{<!-- LOOPING -->} We are using the HTML tags of
+src_emacs-lisp[:exports code]{<ul>} (Unordered List) and src_emacs-lisp[:exports
+code]{<li>} (List Item) to display the list of items in our array. The ~v-for~
+/optionally/ has a second argument, to refer to the looping index; [[https://vuejs.org/guide/essentials/list.html#v-for][it can also]]
+destructure its argument, loop over a single object's value-key pairs, and loop
+over ranges.
+
+src_html[:exports code]{<!-- CONDITIONALS -->}
+When the condition to src_emacs-lisp[:exports code]{v-if} is falsy, the HTML
+element is removed from the DOM; otherwise it's added to the DOM.
+In contrast, src_emacs-lisp[:exports code]{v-show} merely turns off the display.
+([[https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show][~v-if~ vs ~v-show~]])
+
+src_html[:exports code]{<!-- TODO APP. v-bind:𝒳 ≈ :𝒳 -->}
+Vue.js provides HTML directives that “already exist” but /know how to evaluate
+expressions/; e.g., src_C[:exports code]{<a href="{{expr}}">Go!</a>} would /not/
+evaluate src_emacs-lisp[:exports code]{expr}, for that we use =<a v-bind:href=`${expr}`>Go!</a>=
+*with backticks* (ES6 templates). Since src_emacs-lisp[:exports code]{v-bind:} is
+so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
+:href=`${expr}`>Go!</a>}.
+
+( [[https://docs.w3cub.com/vue~3/guide/migration/filters][Filters are removed from Vue 3.0 and no longer supported.]] )
+
+
+/Exercise!/ Get a twitter handle from the user and show a link to that twitter page.
+# 𝒳  ↦  twitter.com/𝒳.
+* Computed Data ~ Reactive Variables
+:PROPERTIES:
+:CUSTOM_ID: Computed-Data-Reactive-Variables
+:END:
+
+#+begin_src html
+<!-- HTML is so permissive that this will load fine even though we're missing <html> and <body> tags. -->
+
+<div id="app">
+    {{ count }} * 2 = {{ double }}
+    <br> <button @click="count++">+</button>
+</div>
+
+<script src="https://unpkg.com/vue@3"></script>
+<script>
+ Vue.createApp({ data()    { return { count: 0 } }
+               , computed: { double() { return this.count * 2 } }
+ }).mount('#app')
+</script>
+#+end_src
+
+* Watchers
+:PROPERTIES:
+:CUSTOM_ID: Watchers
+:END:
+#+begin_src html
+<!-- HTML is so permissive that this will load fine even though we're missing <html> and <body> tags. -->
+<script src="https://unpkg.com/vue@3"></script>
+
+<div id="app">
+    Data: {{ d }};
+    Watcher: {{ w }}
+    <br> <button @click="d++">+</button>
+</div>
+
+<script>
+ Vue.createApp({ data() { return { d: 1, w: 1 } }
+               , watch: { d() { this.w = this.d * 2 } }
+ }).mount('#app')
+</script>
+#+end_src
+
+* COMMENT OLD AngularJS Notes
+:PROPERTIES:
+:CUSTOM_ID: COMMENT-OLD-AngularJS-Notes
+:END:
+** COMMENT Directives & Components ---Essentially “HTML Functions”
+:PROPERTIES:
+:CUSTOM_ID: Directives-Components-Essentially-HTML-Functions
+:END:
+
+The HTML tags starting with src_emacs-lisp[:exports code]{v-} are Vue.js
+/directives/. They operate on HTML elements; e.g., from the first section above,
+the src_emacs-lisp[:exports code]{v-model} directive binds a name to the value
+(text) of an HTML element (such an input box); whereas the
+src_emacs-lisp[:exports code]{v-for} directive repeats an HTML element.
+
+Vue.js /directives/ are meant to encapsulate DOM manipulations only, while
+/components/ are self-contained units that have their own view and data logic
+---i.e., a /component/ is essentially a pre-defined Vue.js app.  (In AngularJS,
+directives do everything and components are just a specific kind of directive.)
+
+#+begin_src html :tangle learning/components.html
+<html >
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <body>
+
+    <div id="app-1">
+      <my-speak></my-speak>
+    </div>
+
+    <div id="app-2">
+      <my-speak></my-speak>
+      <i-speak></i-speak>
+
+      <!-- Show component "my-speak" or "i-speak", dynamically, as requested by user -->
+      <input v-model="user">
+      <component v-bind:is="user"></component>
+    </div>
+
+    <script>
+      // A global component to be used with both of our apps: app-1 and app-2.
+      Vue.component('my-speak',{
+          template : `<div v-on:mouseover = "expose('I love lisp')" v-on:mouseout = "expose('');">Hover to see a secret... {{secret}} </div>`,
+          // The "data" option should be a function that returns a per-instance value in component definitions.
+          // Nice, interactive, example: https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function
+          data: () => ({secret : ""}),
+          methods: {
+              expose(message) {
+                  this.secret = message
+              }
+          }
+      });
+
+      let app1 = new Vue({ el: '#app-1' });
+
+      let app2 = new Vue({
+          el: '#app-2',
+          // A local component registration; it can only be used within the id="app-2" element.
+          components: {
+              'i-speak': {
+                  // Remember that all Vue.js apps are attached to an HTML
+                  // element, so we must have a single top-level element (such as a
+                  // div) in our templates
+                  template : `<div>I am a component belonging to app-2</div>`
+              }
+          },
+          data: { user: '' }
+      });
+
+      </script>
+
+  </body>
+</html>
+#+end_src
+
+** TODO ??? custom directives
+  :PROPERTIES:
+  :CUSTOM_ID: Directives
+  :END:
+
+#+latex: \vspace{-.5em}
+We can also define our own [[https://www.guru99.com/angularjs-custom-directive.html][custom directives]]: Below, our custom
+src_emacs-lisp[:exports code]{ng-speak} directive injects a src_html[:exports
+code]{<strong>} tag and prepends the text given to src_emacs-lisp[:exports
+code]{ng-speak}.
+
+#+latex: \vspace{-1em}
+#+begin_src html :tangle learning/directives_custom.html
+<html ng-app="myApp">
+  <head>
+    <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+    </script>
+  </head>
+  <body>
+    <!-- This becomes:   <strong> Hello, my friends! </strong>  -->
+    <div ng-speak> my friends </div>
+    <!-- This becomes:  Sorted ... ["a","m","s","u"] -->
+    <ng-woah></ng-woah>
+
+    <script>
+      var myApp = angular.module("myApp", [])
+
+      myApp.directive('ngSpeak', function() {
+           return {
+             // Get the HTML within the directive call
+             transclude: true,
+             // Replace the div with this HTML template,
+             // using the div contents.
+             template: `<strong>
+                          Hello, <ng-transclude></ng-transclude>!
+                        </strong>`
+      }})
+
+      myApp.directive('ngWoah', function() {
+           return {
+             template: `Sorted ... {{letters | orderBy: ''}}`,
+             controller: function ($scope) {
+                $scope.letters = "musa".split('') }
+      }})
+    </script>
+  </body>
+</html>
+#+end_src
+# file:~/Desktop/learning/directives_custom.html
+
+*Vue.js Custom Directives Naming:* The /definition/ of directives uses ~camelCase~
+(as in src_emacs-lisp[:exports code]{ngSpeak}), whereas the actual /use/ of a
+directive is done with ~kebab-case~ (as in src_emacs-lisp[:exports
+code]{ng-speak}). Moreover, custom directive names must start with
+src_emacs-lisp[:exports code]{ng}.
+
+# *Convention:* Model names are in ~camelCase~ whereas view names are in ~kebab-case~;
+# e.g., an HTML attribute ~my-awesome-thing~ is named ~myAwesomeThing~ in the model.
+
+Notice that there are two ways to use a directive: Both of src_html[:exports
+code]{<div ng-speak> ... </div>} and src_html[:exports code]{<ng-speak>
+... </ng-speak>} tell Vue.js to instantiate a custom directive; i.e., to
+expand its template which is managed by an instance of the specified controller.
+
+The src_emacs-lisp[:exports code]{template} may ~{{evaluate}}~ any data defined in
+the parent scope; e.g., if our div occurs in the scope of a controller.
+There are several attributes that can be used during a new directive creation;
+here are a few:
+
++ src_emacs-lisp[:exports code]{template}: An inline string (HTML) template.
++ src_emacs-lisp[:exports code]{templateUrl}: An (longer) HTML template inside a
+  separate file.
++ src_emacs-lisp[:exports code]{transclude}: Place the child elements of
+  the directive as within the template.
++ src_emacs-lisp[:exports code]{controller}: Furnish the directive with bindings
+  from JS code.
+  - We /attached the src_emacs-lisp[:exports code]{letters} binding to the scope/
+    using Vue.js's “dependency injection”: We get the scope of the current tag
+    via the special ‘service’ src_emacs-lisp[:exports code]{$scope}.
+  - More on this below, in “MVC”.
+
+  Importantly, the src_emacs-lisp[:exports code]{template} contains the
+  presentation logic and uses bindings, whereas the src_emacs-lisp[:exports
+  code]{controller} provides the /context/ in which the bindings are evaluated.
+
+# The *template* (the part of the view containing the bindings and presentation
+# logic) acts as a blueprint for how our data should be organized and presented
+# to the user. The *controller* provides the context in which the bindings are
+# evaluated and applies behavior and logic to our template.
+
+# Directives admit reuse; e.g., we could have a directive for obtaining user data:
+# Name, age, address.  Then reuse the directive instead of 3 input boxes.
+
+/Directives allow us to reuse functionality!/ Similar parts of our HTML code are
+abstracted out into src_emacs-lisp[:exports code]{template}s and their bindings
+(i.e., the pieces, values, in which the HTML parts differ) are abstracted out
+into src_emacs-lisp[:exports code]{controller}s.
++ We just invoke the directive to get the new feature.
++ This means that any alteration to the directive definition, such as the
+  template, propagates to all use sites; no copy-pasting needed.
++ The main view (index.html) becomes more declarative, cleaner.
+
+[[https://docs.angularjs.org/tutorial/step_03][Components]] are a [[https://docs.angularjs.org/guide/component][‘saner’]] form of directives that aim to narrow scope.
+# The scope, that glues our controller and template together into a dynamic
+# view, is not isolated from other parts of the page. What this means is that a
+# random, unrelated change in a different part of the page (e.g. a property-name
+# conflict) could have unexpected and hard-to-debug side effects on our view.
+#
+# Vue.js will create a so called isolate scope for each instance of our
+# component, which means no prototypal inheritance and no risk of our component
+# affecting other parts of the application or vice versa.
+#
+# To create a component, we use the .component() method of an Vue.js module. We
+# must provide the name of the component and the Component Definition Object (CDO
+# for short).
+#
+# In its simplest form, the CDO will just contain a template and a controller. (We
+# can actually omit the controller and Vue.js will create a dummy controller
+# for us. This is useful for simple "presentational" components, that don't attach
+# any behavior to the template.)
+
+** TODO The MVC Design Pattern ---Model, View, Controller
+  :PROPERTIES:
+  :CUSTOM_ID: MVC
+  :END:
+
+*Instead of declaring variables and their values /within/ the view, we can do so
+in a controller /for/ the model.*
+
+:Diagram:
+Here's the “circle”:
+
+Controller [JS function]
+--> (updates the model) -->
+Model [$scope object]
+<--> (Two way data binding) <-->
+View (DOM element)
+--> ($scope function call based on user interaction)
+Controller
+
+Initially, ((View calls the controller by user action)).
+
+/Two way data binding/ means that both sides are automatically monitored and when
+one of them is updated, then so is the other.
+:End:
+
+The /MVC/ design pattern describes a separation of concerns by splitting an
+application into 3 parts:
+| /Model/      |   | The application data, state: Variables and functions |
+| /View/       |   | The presentation of the data: HTML, templates, CSS   |
+| /Controller/ |   | The brains/logic that connects the above two.        |
+
+Tersely put, MVC is the CRUD operations & state, the GUI, and the code to
+connect the two ---e.g., changes in one are propagated to the other.
+
+MVC splits a program into the (“backend, knowledge”) data, the (“frontend,
+visual”) presentation, and the logic layers.  That is, /the view is a projection
+of the model through the HTML template, as directed by the controller./
+
+# In Vue.js, the *view* is a projection of the model through the HTML *template.*
+# This means that whenever the model changes, Vue.js refreshes the appropriate
+# binding points, which updates the view.
+
+# E.g., HTML /models/ text, and it can be /viewed/ nicely using CSS, and a browser /controls/ how the CSS is applied to the HTML.
+
+E.g., in a restaurant, the kitchen with its ingredients and chefs is the model,
+the menu and dinning table is the view, and the waiter is the controller.
+
+# Sometimes the 3 roles are played by the same object; e.g., a scroll bar.
+
+/Two-way binding/: When we specify which control is associated to which part of a
+view, Vue.js automatically keeps the two layers in sync.  As such, the
+/controller/ consumes user data from the view, uses model utilities to process the
+data, then displays new data to the user via the view.
+
+The special src_emacs-lisp[:exports code]{$scope} ‘service’ is used to expose
+the model to the view ---the controller's job is to populate the scope with
+behaviour. That is, the view can execute any computation, and access any data,
+that is bound to src_emacs-lisp[:exports code]{$scope} ---as such, an app
+generally has multiple controllers, each for a particular part of the view.
+
+# In the view, we use {{mustaches}} to access the behaviour defined in the
+# controller ---which makes use of data in the model.
+
+# Member variable added to scope object ;-)
+
+*** /How do we split up an app?/
+   :PROPERTIES:
+   :CUSTOM_ID: How-do-we-split-up-an-app
+   :END:
+
+#+latex: \vspace{0.4em}
+   | /*How do we split up an app?*/ |
+
+By way of example, the following code...
+#+begin_src html :tangle learning/mvc1.html
+<!doctype html>
+<html ng-app>
+  <head>
+    <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+    </script>
+  </head>
+  <body ng-init="prompt = 'What is your name?'">
+    <input type=text ng-model="userName" placeholder="{{prompt}}">
+    <div ng-if="userName"> "Why hello there, " {{userName}} </div>
+  </body>
+</html>
+#+end_src
+# file:~/Desktop/learning/mvc1.html
+
+Can be split up using a /controller/...
+(We also change from ~userName~ to an object ~user~ with a field ~name~)
+#+begin_src html :tangle learning/mvc2.html
+<!doctype html>
+<html ng-app="myGreetingApp"> <!-- NEW -->
+  <head>
+    <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+    </script>
+  </head>
+  <body ng-controller="PromptController"> <!-- NEW -->
+    <input type=text ng-model="user.name" placeholder="{{prompt}}">
+    <div ng-if="user.name"> {{greet(user)}} </div>
+    <script> // NEW
+      angular.module("myGreetingApp", [])
+       .controller("PromptController",
+         function($scope){
+           // One-time setup for prompt
+           $scope.prompt = "What is your name?"
+           // Whenever the user changes, this function is called.
+           $scope.greet = function(user){
+             return  "Why hello there, " + user.name
+      }})
+    </script>
+  </body>
+</html>
+#+end_src
+# file:~/Desktop/learning/mvc2.html
+
+( The line src_html[:exports code]{<body ng-controller="PromptController">} lets
+everything in the src_emacs-lisp[:exports code]{body} tag have access to the
+functionality of the src_emacs-lisp[:exports code]{PromptController} (which is
+just a JS function).  Notice that our controller /defines/ src_emacs-lisp[:exports
+code]{prompt} and src_emacs-lisp[:exports code]{greet} for use in the view
+---/using/ the value of the input box, which is declared in the view with
+src_emacs-lisp[:exports code]{ng-model="user.name"}; conversely, we can update
+the ~user.name~ /input box/'s value using the controller: ~$scope.user.name =
+"hola"~. )
+
+# Which can then be
+The above is a bit messy, and so we split it up further into two files: The
+src_emacs-lisp[:exports code]{mvc_frontend.html} file focus on presentation only...
+#+begin_src html :tangle learning/mvc_frontend.html
+<!doctype html>
+<html ng-app="myGreetingApp">
+  <head>
+    <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+    </script>
+    <script src="mvc_backend.js"></script> <!-- NEW -->
+  </head>
+  <body ng-controller="PromptController">
+    <input type=text ng-model="user.name" placeholder="{{prompt}}">
+    <div ng-if="user.name"> {{greet(user)}} </div>
+  </body>
+</html>
+#+end_src
+#+latex: \columnbreak
+...and the src_emacs-lisp[:exports code]{mvc_backend.js} file, which has the bindings,...
+#+begin_src js :tangle learning/mvc_backend.js
+// Model
+var app = angular.module("myGreetingApp", [])
+function greet(user) { return  "Why hello there, " + user.name }
+
+// Controllers
+app.controller("PromptController",
+      function($scope){
+        $scope.prompt = "What is your name?"
+        $scope.greet  = greet
+     })
+#+end_src
+
+# file:~/Desktop/learning/mvc_frontend.html
+
+It may be useful to know that within a controller, src_emacs-lisp[:exports
+code]{$eval} acts like ~{{...}}~; e.g., instead of src_emacs-lisp[:exports
+code]{$scope.a + $scope.b} we may write src_emacs-lisp[:exports
+code]{$scope.$eval('a + b')}.
+
+*** Number Guessing Game
+   :PROPERTIES:
+   :CUSTOM_ID: Number-Guessing-Game
+   :END:
+
+#+latex: \vspace{0.4em}
+   | */Number Guessing Game/* |
+
+ Exercise: Using src_emacs-lisp[:exports code]{ng-init}, src_emacs-lisp[:exports
+ code]{ng-click}, controllers, and other directives, build a “number guessing game”; the user
+ makes a guess in an input box, sees whether the guess is too high or low or
+ correct, and has a “new game” button.
+ Finally, give the user an “I give up” button which shows the answer
+ ---hint, use src_emacs-lisp[:exports code]{ng-if}.
+
+ Hint: This can be done in under 40 lines, in a single file.
+
+ #+begin_src html :tangle learning/guess.html :exports none
+<!doctype html>
+<html ng-app="myGuessingApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"> </script>
+  </head>
+  <body ng-controller="PromptController">
+    <button ng-click="newGame()" ng-init="newGame()"> New game </button>
+    <input type=number ng-model="user.guess" placeholder="{{prompt}}">
+    <button ng-init='quit = false' ng-click='quit = !quit'> Quit </button>
+    <div ng-if='quit'> The target number is {{goal}} </div>
+    <div ng-if="user.guess"> {{reply(user)}} </div>
+    <script>
+      angular.module("myGuessingApp", [])
+       .controller("PromptController",
+         function($scope){
+           $scope.prompt = "Guess a number (0..100)"
+           // New goal and clear user guesses
+           $scope.newGame = function (){
+             $scope.goal = Math.floor(Math.random()*100)
+             $scope.user.guess = '' }
+           // Reply to user guesses
+           $scope.reply = function(user){
+             if (user.guess < $scope.goal)
+                return  "Too low!";
+             if (user.guess > $scope.goal)
+                return  "Too high!";
+             if (user.guess == $scope.goal)
+                return  "You got it!";
+      }})
+    </script>
+  </body>
+</html>
+ #+end_src
+ # file:~/Desktop/learning/guess.html
+
+** TODO Single Page Applications (SPA) and src_emacs-lisp[:exports code]{$route}
+  :PROPERTIES:
+  :CUSTOM_ID: Single-Page-Applications-SPA-and-src-emacs-lisp-exports-code-route
+  :END:
+
+SPA's give the feeling that the entire application is in a single webpage: When
+the user requests something, /part of the webpage/ changes rather than loading an
+entirely new webpage. Example SPA's include Gmail and Netflix.
+
+:more:
+
+In the previous step, we saw how a controller and a template worked together to convert a static HTML page into a dynamic view. This is a very common pattern in Single-Page Applications in general (and Vue.js applications in particular):
+
+Instead of creating a static HTML page on the server, the client-side code
+"takes over" and interacts dynamically with the view, updating it instantly to
+reflect changes in model data or state, usually as a result of user interaction.
+:end:
+
+That is, instead of having a webpage for each aspect of your app, we have a
+single webpage and /multiple/ views ---one of which is shown to the user depending
+on what they want--- each with its own controller (since each view has its own
+goals).
+
+SPA's can be created as follows ---and exemplified in the code below.
+
+1. Add src_emacs-lisp[:exports code]{angular-route} as a script reference /after/
+   the Vue.js script.
+
+   Routing is used to present different views to the user on the same web page:
+   The src_emacs-lisp[:exports code]{$route} service watches the URL, and
+   whenever it changes, a route definition is looked up (i.e., view +
+   controller).
+
+   src_js[:exports code]{// [1b]} In the app declaration (the JS file), we need
+   to add a dependency on the src_emacs-lisp[:exports code]{ngRoute} module.
+
+2. Add src_emacs-lisp[:exports code]{href} tags which will represent links to
+   the different parts of the application.
+
+3. Add the src_emacs-lisp[:exports code]{ng-view} directive within the
+   application; it's used to inject the various views.
+
+   Whenever the route (the URL in your browser's address bar) changes, we load
+   the associated HTML template view at the location of the
+   src_emacs-lisp[:exports code]{ng-view} directive.
+
+4. Define routes through src_emacs-lisp[:exports code]{$routeProvider}.
+
+   src_js[:exports code]{// [4a]} Whenever the user clicks on the href tag ~home~,
+   from step 2, we place the HTML src_html[:exports code]{About <em>Us</em>}
+   into the place of the src_emacs-lisp[:exports code]{ng-view} tag.
+
+   src_js[:exports code]{// [4b]} Whenever the user clicks on the href tag ~"hello"~,
+   from step 2, we place the contents of =hello.html= into the place of the
+   src_emacs-lisp[:exports code]{ng-view} tag.
+
+   src_js[:exports code]{// [4c]} Whenever the user clicks on the href tag
+   ~newevent~, the ~newevent.html~ template is inserted in-place of the
+   src_emacs-lisp[:exports code]{ng-view} tag /and/ this view is given the
+   src_emacs-lisp[:exports code]{NewEventController} controller to manage its
+   state and logic.
+
+   src_js[:exports code]{// [4d]} This route definition has a custom key-value
+   pair defined in the route, which is then accessed in step 5 from the
+   src_emacs-lisp[:exports code]{$route} service and attached to the
+   src_emacs-lisp[:exports code]{$scope} for use in the template.
+
+   src_js[:exports code]{// [4e]} Parameters can be passed to the route via the
+   URL; e.g., ~index.html#!/go/1~ and ~index.html#!/go/23~ are two routes with the
+   parameter being 1 and 23.  The controller service src_emacs-lisp[:exports
+   code]{$routeParams} then access the parameters.  (Note: ~index.html#!/go/~ is
+   the route ~go~ with an empty parameter; it is different from ~index.html#!/go~,
+   which has no parameters and so is either supported in its own route
+   definition or redirects to the default route.)
+
+   src_js[:exports code]{// [4f]} Whenever the URL has a route not accounted for
+   ---such as when the page opens up, or the user changes the URL to
+   gibberish---, then we redirect them to a default route.  When not provided,
+   unconsidered routes redirect to the landing page; i.e., src_js[:exports
+   code]{redirectTo: '/'}.
+
+5. Add controllers to the application.
+
+   Just as the controller src_emacs-lisp[:exports code]{$scope} service passes
+   information from the model to the view , the src_emacs-lisp[:exports
+   code]{$route} service accesses properties of the route.
+
+   Note that we could reuse the controller among multiple views, or, more
+   likely, each view could have its own controller.
+
+6. Create the different web pages for the application
+
+   In our example below, we use the following templates:
+
+#+begin_parallel
+_hello.html_
+#+begin_src html :tangle learning/hello.html
+Hello!
+#+end_src
+#+columnbreak:
+_newevent.html_
+#+begin_src html :tangle learning/newevent.html
+Wanna add a new event, eh?
+{{message}}
+#+end_src
+#+end_parallel
+
+#+latex: \vspace{1ex}
+
+*** The Code                                                         :ignore:
+   :PROPERTIES:
+   :CUSTOM_ID: The-Code
+   :END:
+
+. . . . . . . . . . . . . . . . . . . . . . .
+src_emacs-lisp[:exports code]{index.html}
+. . . . . . . . . . . . . . . . . . . . . . .
+# file:~/Desktop/learning/spa.html
+#+begin_src html :tangle learning/spa.html
+<html ng-app = "myApp">
+  <head>
+    <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+    </script>
+    <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js">
+    </script>  <!-- [1] -->
+    <script src="script.js"></script>
+  </head>
+  <body>
+    This text appears alongside every view <hr>
+    <!-- [2] -->
+    <a href="#!/hello">Hello</a><br>
+    <a href="#!/home">Home</a><br>
+    <a href="#!/newevent">Add new event</a><br>
+    <a href="#!/greet">Welcome</a><br>
+    <input type="number" ng-model="it" placeholder="0">
+    <a ng-href="#!/go/{{it}}">Go!</a>
+    <!-- [3] -->
+    <br><div ng-view></div><hr>
+    Likewise, this text appears alongside every view
+  </body>
+</html>
+#+end_src
+
+#+latex: \vspace{-1ex}
+. . . . . . . . . . . . . . . . . . . . . . .
+src_emacs-lisp[:exports code]{script.js}
+. . . . . . . . . . . . . . . . . . . . . . .
+
+#+latex: \vspace{-1ex}
+#+begin_src js :tangle learning/script.js
+var myApp = angular
+            .module("myApp",["ngRoute"]) // [1b]
+
+myApp.config(function($routeProvider){ // [4]
+    $routeProvider
+        // [4a] Inline HTML template
+        .when("/home",{
+            template:"About <em>Us</em>"
+        })
+        // [4b] HTML template in another file
+        .when("/hello", {
+            templateUrl: "hello.html"
+        })
+        // [4c] HTML template that has {{expressions}}
+        .when("/newevent", {
+            templateUrl: "newevent.html",
+            controller: 'NewEventController'
+        })
+        // [4d] HTML /inline/ template that has {{expressions}}
+        // and has a key-value pair declared in the route definition.
+        .when("/greet", {
+            myfriend: "Jasim",
+            template: "Hello, {{person}}!",
+            controller: 'GreetingController'
+        })
+         // [4e] A template with a parameter “myParam”;
+         // which the controller decides to bind it to “page”.
+        .when("/go/:myParam", {
+            template: "Welcome to page: {{page}}",
+            controller: 'GoController'
+        })
+        // [4f] When gibberish is appended to the URL, go to “/hello”
+        .otherwise({
+            redirectTo: '/hello'
+        })})
+// [5]
+myApp.controller('NewEventController', function($scope){  // [4c]
+    $scope.message = "Hola!" })
+myApp.controller('GreetingController', function($scope, $route){ // [4d]
+    $scope.person = $route.current.myfriend })
+myApp.controller('GoController', function($scope, $routeParams){ // [4e]
+    $scope.page = $routeParams.myParam })
+#+end_src
+
+# The “.controller”'s cannot be chained like the “.when”!
+
+#+latex: \vspace{1em}
+
+[[https://stackoverflow.com/questions/16251420/couldnt-load-template-using-templateurl-in-angularjs/16251614#16251614][/Things may not work!/]] Open up the console in your browser ---F12--- and you may
+see an [[https://developer.mozilla.org/pl/docs/XMLHttpRequest][XMLHttpRequest]] (XHR) error; XHR requests is how Vue.js loads templates
+via an HTTP server.  One solution is to run your own [[https://stackoverflow.com/questions/16333790/node-js-quick-file-server-static-files-over-http/16350826#16350826][web server]]:
+1. ~npm install http-server -g~
+2. ~cd ⟨my-folder⟩~
+3. ~http-server~
+4. Then open http://localhost:8080/index.html
+** COMMENT columnbreak                                               :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: columnbreak
+  :END:
+#+latex: \columnbreak
+** TODO Reads
+  :PROPERTIES:
+  :CUSTOM_ID: Reads
+  :END:
+
+  The first two links below each contain lots of small, digestible, tutorials on
+  Vue.js with numerous screenshots.
+
++ [[https://www.freecodecamp.org/news/simplified-explanation-to-mvc-5d307796df30/][What is MVC, and how is it like a sandwich shop?]]
+
+  # Explains model view controller architecture using a sandwich shop analogy
+** COMMENT What if I want ~N~ columns? Or non-landscape? Or multiple formats?
+  :PROPERTIES:
+  :CUSTOM_ID: COMMENT-What-if-I-want-N-columns-Or-non-landscape-Or-multiple-formats
+  :END:
+
+Press ~C-c C-c~ on the following incantation to produce a single column portrait of the cheat sheet.
+#+name: make-portrait
+#+BEGIN_SRC emacs-lisp :results none
+(with-temp-buffer
+    (insert
+    "#+EXPORT_FILE_NAME: CheatSheet_Portrait.pdf
+     ,#+LATEX_HEADER_EXTRA: \\landscapefalse \\def\\cheatsheetcols{1}
+     ,#+INCLUDE: CheatSheet.org
+    ")
+
+    (let ((org-export-use-babel nil))
+      (org-mode)
+      (org-latex-export-to-pdf)
+      )
+)
+#+END_SRC
+** COMMENT Making ~README.org~
+  :PROPERTIES:
+  :CUSTOM_ID: COMMENT-Making-README-org
+  :END:
+
+  Evaluate the following source block with ~C-c C-c~
+  to produce a ~README~ file.
+
+  # :'( For some reason using {{{title}}} below would not work.
+
+#+NAME: make-readme
+#+BEGIN_SRC emacs-lisp
+(with-temp-buffer
+    (insert
+    "#+EXPORT_FILE_NAME: README.md
+     ,#+HTML: <h1> Vue.jsCheatSheet </h1>
+     ,#+OPTIONS: toc:nil d:nil
+     # Toc is displayed below at a strategic position.
+
+     {{{blurb}}}
+
+    ,*The listing sheet, as PDF, can be found
+     [[file:CheatSheet.pdf][here]]*,
+     or as a [[file:CheatSheet_Portrait.pdf][single column portrait]],
+     while below is an unruly html rendition
+     ---there is also a
+     badge:beautiful|HTML_webpage|success|https://alhassy.github.io/Vue.jsCheatSheet|javascript (•̀ᴗ•́)و
+
+     # Markdown links: [title](target)
+
+     This reference sheet is built from a
+     [[https://github.com/alhassy/CheatSheet][CheatSheets with Org-mode]]
+     system.
+
+     ,#+TOC: headlines 2
+     ,#+INCLUDE: CheatSheet.org
+    ")
+
+    ;; No code execution on export
+    ;; ⟪ For a particular block, we use “:eval never-export” ⟫
+    ;;
+    (let ((org-export-use-babel nil))
+      (org-mode)
+      (org-md-export-to-markdown)
+      )
+)
+#+END_SRC
+
+#+RESULTS: make-readme
+: README.md
+
+Note that the ~blurb~ macro is defined by the user, to provide a terse description of the project.
+   - Think the one-line statement at the top of a github repo page.
+
+#    The ~d:nil~ ensures the ‘drawer’ ~:Hide: ⋯ :End:~ is not exported; it's there for me
+#    as a reminder.
+** COMMENT newpage                                                   :ignore:
+  :PROPERTIES:
+  :CUSTOM_ID: COMMENT-newpage
+  :END:
+
+#+latex: \columnbreak
