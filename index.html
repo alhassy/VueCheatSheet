@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-03-23 Wed 17:11 -->
+<!-- 2022-03-24 Thu 10:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Vue.js CheatSheet</title>
@@ -218,8 +218,9 @@
 <ul>
 <li><a href="#Hello-World">1. <a href="#Hello-World">Hello World!</a></a></li>
 <li><a href="#Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow">2. <a href="#Vue-js-makes-HTML-into-a-language-with-variables-and-control-flow">Vue.js makes HTML into a language with variables and control flow</a></a></li>
-<li><a href="#Computed-Data-Reactive-Variables">3. <a href="#Computed-Data-Reactive-Variables">Computed Data ~ Reactive Variables</a></a></li>
-<li><a href="#Watchers">4. <a href="#Watchers">Watchers</a></a></li>
+<li><a href="#class-Bindings">3. <a href="#class-Bindings"> <code>:class</code> Bindings</a></a></li>
+<li><a href="#Computed-Data-Reactive-Variables">4. <a href="#Computed-Data-Reactive-Variables">Computed Data ~ Reactive Variables</a></a></li>
+<li><a href="#Watchers">5. <a href="#Watchers">Watchers</a></a></li>
 </ul>
 </div>
 </div>
@@ -328,6 +329,10 @@ associated <i>controller,</i> then used in the <i>view</i>.
       &lt;<span style="color: #6c3163; font-weight: bold;">button</span> <span style="color: #3a81c3;">v-on</span>:<span style="color: #715ab1;">click</span>=<span style="color: #2d9574;">"increment"</span>&gt;        Increment      &lt;/<span style="color: #6c3163; font-weight: bold;">button</span>&gt;
       Count: {{count}}
 
+      <span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">Inline multiple actions; only works with proper v-model variables; i.e. not &#8220;love&#8221; above.</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span>
+      <span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">&#8220;age&#8221; </span><span style="color: #2aa1ae; background-color: #ecf3ec; text-decoration: underline;">is declared</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> below in &#8220;data&#8221;.</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span>
+      &lt;<span style="color: #6c3163; font-weight: bold;">label</span>&gt; &lt;<span style="color: #6c3163; font-weight: bold;">input</span> <span style="color: #715ab1;">type</span>=<span style="color: #2d9574;">"checkbox"</span> <span style="color: #715ab1;">v-model</span>=<span style="color: #2d9574;">"isItOn"</span> @click=<span style="color: #2d9574;">"count += 40, age += 2"</span> /&gt; {{ isItOn }} &lt;/<span style="color: #6c3163; font-weight: bold;">label</span>&gt;
+
       <span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">ARRAYS &amp; JSON OBJECTS ------------------------------------------------------</span><span style="color: #2aa1ae; background-color: #ecf3ec;">--&gt;</span>
       <span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">Lets make an array of objects ...</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span>
       {{  people = [ {name: 'kathy', age: 32}
@@ -363,8 +368,9 @@ associated <i>controller,</i> then used in the <i>view</i>.
      let app = Vue.createApp({
          data() {
              return { count: 0
+                    , isItOn: false
                     , query: ''
-                    , age: ''
+                    , age: 0
                     , people: []
              }
          },
@@ -391,20 +397,9 @@ associated <i>controller,</i> then used in the <i>view</i>.
     &lt;<span style="color: #6c3163; font-weight: bold;">script</span>&gt;
      Vue.createApp({
          data() {
-             return { new<img src="data:image/svg;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMTYuMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDov
-L3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5
-L3hsaW5rIj4gPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjE2LjIiIHg9IjAuMCIgeT0iMC4wIiBy
-eD0iMy4wIiBmaWxsPSIjZGM3NTJmIj48L3JlY3Q+IDx0ZXh0IHk9IjEyIiB4PSI2LjAiIGZpbGw9
-IiNmNmYxZTEiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSI2MDAiIGZvbnQtZmFtaWx5PSJT
-b3VyY2UgQ29kZSBQcm8iPiBUb2RvPC90ZXh0Pjwvc3ZnPg==" alt="Todo:" /><img src="data:image/svg;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMTYuMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDov
-L3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5
-L3hsaW5rIj4gPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjE2LjIiIHg9Ii04LjAiIHk9IjAiIHJ4
-PSIzIiBmaWxsPSIjZGM3NTJmIj48L3JlY3Q+IDxyZWN0IHdpZHRoPSIzMCIgaGVpZ2h0PSIxNC4y
-IiB4PSItNy4wIiB5PSIxLjAiIHJ4PSIyLjAiIGZpbGw9IiNmNmYxZTEiPjwvcmVjdD4gPHRleHQg
-eT0iMTIiIHg9IjQuMCIgZmlsbD0iI2RjNzUyZiIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9
-IjQwMCIgZm9udC1mYW1pbHk9IlNvdXJjZSBDb2RlIFBybyI+ICcnPC90ZXh0Pjwvc3ZnPg==" alt=" ''" />
+             return { newTodo: ''
                     , todos: [ { text: 'Add <span style="text-decoration: underline;">some</span> todos' } ]
-                    }
+             }
          },
          methods: {
              addTodo () {
@@ -447,11 +442,10 @@ over ranges.
 </p>
 
 <p>
-<code class="src src-html"><span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">CONDITIONALS</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span></code>
-When the condition to <code class="src src-emacs-lisp">v-if</code> is falsy, the HTML
-element is removed from the DOM; otherwise it's added to the DOM.
-In contrast, <code class="src src-emacs-lisp">v-show</code> merely turns off the display.
-(<a href="https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show"><code>v-if</code> vs <code>v-show</code></a>)
+<code class="src src-html"><span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">CONDITIONALS</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span></code> When the condition to <code class="src src-emacs-lisp">v-if</code>
+is falsy, the HTML element is removed from the DOM; otherwise it's added to the
+DOM.  In contrast, <code class="src src-emacs-lisp">v-show</code> merely turns off the display.  (<a href="https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show"><code>v-if</code> vs
+<code>v-show</code></a>). There are also <code>v-else</code> and <code>v-else-if</code>.
 </p>
 
 <p>
@@ -467,14 +461,38 @@ so useful, there is a brief alias: <code class="src src-emacs-lisp">&lt;a <span 
 ( <a href="https://docs.w3cub.com/vue~3/guide/migration/filters">Filters are removed from Vue 3.0 and no longer supported.</a> )
 </p>
 
-
 <p>
 <i>Exercise!</i> Get a twitter handle from the user and show a link to that twitter page.
 </p>
 </div>
 </div>
+<div id="outline-container-class-Bindings" class="outline-2">
+<h2 id="class-Bindings"><span class="section-number-2">3.</span> <a href="#class-Bindings"> <code>:class</code> Bindings</a></h2>
+<div class="outline-text-2" id="text-class-Bindings">
+<div class="org-src-container">
+<pre class="src src-html"><span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">HTML is so permissive that this will load fine even though we're missing &lt;html&gt; and &lt;body&gt; tags.</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span>
+&lt;<span style="color: #6c3163; font-weight: bold;">script</span> <span style="color: #715ab1;">src</span>=<span style="color: #2d9574;">"https://unpkg.com/vue@3"</span>&gt;&lt;/<span style="color: #6c3163; font-weight: bold;">script</span>&gt;
+
+&lt;<span style="color: #6c3163; font-weight: bold;">div</span> <span style="color: #715ab1;">id</span>=<span style="color: #2d9574;">"app"</span>&gt;
+    &lt;<span style="color: #6c3163; font-weight: bold;">h1</span> :class=<span style="color: #2d9574;">"isRed ? 'r' : 'b'"</span>&gt; Hello &lt;<span style="color: #6c3163; font-weight: bold;">h1</span>&gt;
+&lt;/<span style="color: #6c3163; font-weight: bold;">div</span>&gt;
+
+&lt;<span style="color: #6c3163; font-weight: bold;">style</span>&gt;
+.r {color: red;}
+.b {color: blue;}
+&lt;/<span style="color: #6c3163; font-weight: bold;">style</span>&gt;
+
+&lt;<span style="color: #6c3163; font-weight: bold;">script</span>&gt;
+ Vue.createApp({ data() { return { isRed: false } }
+ }).mount('#app')
+&lt;/<span style="color: #6c3163; font-weight: bold;">script</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+
 <div id="outline-container-Computed-Data-Reactive-Variables" class="outline-2">
-<h2 id="Computed-Data-Reactive-Variables"><span class="section-number-2">3.</span> <a href="#Computed-Data-Reactive-Variables">Computed Data ~ Reactive Variables</a></h2>
+<h2 id="Computed-Data-Reactive-Variables"><span class="section-number-2">4.</span> <a href="#Computed-Data-Reactive-Variables">Computed Data ~ Reactive Variables</a></h2>
 <div class="outline-text-2" id="text-Computed-Data-Reactive-Variables">
 <div class="org-src-container">
 <pre class="src src-html"><span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">HTML is so permissive that this will load fine even though we're missing &lt;html&gt; and &lt;body&gt; tags.</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span>
@@ -496,7 +514,7 @@ so useful, there is a brief alias: <code class="src src-emacs-lisp">&lt;a <span 
 </div>
 
 <div id="outline-container-Watchers" class="outline-2">
-<h2 id="Watchers"><span class="section-number-2">4.</span> <a href="#Watchers">Watchers</a></h2>
+<h2 id="Watchers"><span class="section-number-2">5.</span> <a href="#Watchers">Watchers</a></h2>
 <div class="outline-text-2" id="text-Watchers">
 <div class="org-src-container">
 <pre class="src src-html"><span style="color: #2aa1ae; background-color: #ecf3ec;">&lt;!-- </span><span style="color: #2aa1ae; background-color: #ecf3ec;">HTML is so permissive that this will load fine even though we're missing &lt;html&gt; and &lt;body&gt; tags.</span><span style="color: #2aa1ae; background-color: #ecf3ec;"> --&gt;</span>
@@ -520,7 +538,7 @@ so useful, there is a brief alias: <code class="src src-emacs-lisp">&lt;a <span 
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: <a href="https://alhassy.github.io/">Musa Al-hassy</a></p>
-<p class="date">Created: 2022-03-23 Wed 17:11</p>
+<p class="date">Created: 2022-03-24 Thu 10:03</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

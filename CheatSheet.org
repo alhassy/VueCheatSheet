@@ -128,6 +128,10 @@ associated /controller,/ then used in the /view/.
       <button v-on:click="increment">        Increment      </button>
       Count: {{count}}
 
+      <!-- Inline multiple actions; only works with proper v-model variables; i.e. not “love” above. -->
+      <!-- “age” is declared below in “data”. -->
+      <label> <input type="checkbox" v-model="isItOn" @click="count += 40, age += 2" /> {{ isItOn }} </label>
+
       <!-- ARRAYS & JSON OBJECTS -------------------------------------------------------->
       <!-- Lets make an array of objects ... -->
       {{  people = [ {name: 'kathy', age: 32}
@@ -163,8 +167,9 @@ associated /controller,/ then used in the /view/.
      let app = Vue.createApp({
          data() {
              return { count: 0
+                    , isItOn: false
                     , query: ''
-                    , age: ''
+                    , age: 0
                     , people: []
              }
          },
@@ -193,7 +198,7 @@ associated /controller,/ then used in the /view/.
          data() {
              return { newTodo: ''
                     , todos: [ { text: 'Add some todos' } ]
-                    }
+             }
          },
          methods: {
              addTodo () {
@@ -232,11 +237,10 @@ code]{<li>} (List Item) to display the list of items in our array. The ~v-for~
 destructure its argument, loop over a single object's value-key pairs, and loop
 over ranges.
 
-src_html[:exports code]{<!-- CONDITIONALS -->}
-When the condition to src_emacs-lisp[:exports code]{v-if} is falsy, the HTML
-element is removed from the DOM; otherwise it's added to the DOM.
-In contrast, src_emacs-lisp[:exports code]{v-show} merely turns off the display.
-([[https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show][~v-if~ vs ~v-show~]])
+src_html[:exports code]{<!-- CONDITIONALS -->} When the condition to src_emacs-lisp[:exports code]{v-if}
+is falsy, the HTML element is removed from the DOM; otherwise it's added to the
+DOM.  In contrast, src_emacs-lisp[:exports code]{v-show} merely turns off the display.  ([[https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show][~v-if~ vs
+~v-show~]]). There are also =v-else= and =v-else-if=.
 
 src_html[:exports code]{<!-- TODO APP. v-bind:𝒳 ≈ :𝒳 -->}
 Vue.js provides HTML directives that “already exist” but /know how to evaluate
@@ -248,9 +252,32 @@ so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
 
 ( [[https://docs.w3cub.com/vue~3/guide/migration/filters][Filters are removed from Vue 3.0 and no longer supported.]] )
 
-
 /Exercise!/ Get a twitter handle from the user and show a link to that twitter page.
 # 𝒳  ↦  twitter.com/𝒳.
+*  ~:class~ Bindings
+:PROPERTIES:
+:CUSTOM_ID: class-Bindings
+:END:
+
+#+begin_src html
+<!-- HTML is so permissive that this will load fine even though we're missing <html> and <body> tags. -->
+<script src="https://unpkg.com/vue@3"></script>
+
+<div id="app">
+    <h1 :class="isRed ? 'r' : 'b'"> Hello <h1>
+</div>
+
+<style>
+.r {color: red;}
+.b {color: blue;}
+</style>
+
+<script>
+ Vue.createApp({ data() { return { isRed: false } }
+ }).mount('#app')
+</script>
+#+end_src
+
 * Computed Data ~ Reactive Variables
 :PROPERTIES:
 :CUSTOM_ID: Computed-Data-Reactive-Variables
@@ -296,6 +323,10 @@ so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
 * COMMENT OLD AngularJS Notes
 :PROPERTIES:
 :CUSTOM_ID: COMMENT-OLD-AngularJS-Notes
+:END:
+** Vue Slots = AngularJS Transclusion
+:PROPERTIES:
+:CUSTOM_ID: Vue-Slots-AngularJS-Transclusion
 :END:
 ** COMMENT Directives & Components ---Essentially “HTML Functions”
 :PROPERTIES:
