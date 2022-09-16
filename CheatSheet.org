@@ -1,3 +1,45 @@
+# TODO: Maybe I can organise the sections into self-contained apps; eg todo app,[l]oops]
+# movie search app [axios/computed]; meal puchase app [components]
+# Google: Tiny web apps for beginners.
+# Google: Tiny web apps for beginners in angularjs|vuejs|react.
+
+# All my mini apps are live, using “Netlify's drag&drop deploys”;
+ e.g., https://musa-movie-search.netlify.app/
+
+:Netlify:
+
+We'll see how to quickly deploy (and redeploy) a static site using Netlify's Drop. This service allows a drag-and-drop approach to application deployment.
+
+Transcript
+Comments (0)
+Instructor: [0:00] I'm going to use Netlify Drop to be able to deploy my site. What that allows me to do is simply drag and drop a folder into this area, and it will deploy my site. I'm going to pick up my Vue site, I'm going to drop it over there, and it's going to upload. After a short period of time, it's going to deploy my site.
+
+"[0:20] Sorry, we're having trouble getting our ticket types. Try again later." Ah, because we've got the broken URL. We can fix our URL, save our files. Then back in our site overview, we can go to Deploys. We've still got this space here. "Need to update your site? Drag and drop." Upload. Deploy.
+
+[0:44] Now, when we go to the site, it's been correctly deployed with the correct URL. We get the exact same functionality that we've developed so far. It's also available this URL that we can share with our friends.
+
+:End:
+
+
+
+[[https://www.jesuisundev.com/en/understand-vuejs-in-5-minutes/
+][Understand VueJS in 5 minutes - Je suis un dev]]
+
+[[https://egghead.io/courses/create-a-news-app-with-vue-js-and-nuxt
+][Build news app with vuejs | egghead.io]]
+
+https://egghead.io/lessons/vue-get-up-and-running-with-vue-router
+
+[[https://egghead.io/courses/build-a-digital-garden-with-nuxt-and-nuxt-content-module-9b67f0de
+][Build vuejs app with nuxt | egghead.io]]
+
+[[https://egghead.io/courses/build-a-digital-garden-with-nuxt-and-nuxt-content-module-9b67f0de][Build a Digital Garden with Nuxt and Nuxt Content Module | egghead.io]]
+
+[[https://youtu.be/w58aZjACETQ ][Micro-Frontends: What, why and how - YouTube]] [[https://youtu.be/Cp7ZTUMqK8Y ][Web development made easy | Opal
+Devlog #1 - YouTube]] [[https://youtu.be/wsSMBss-XfI ][How the backend and frontend communicate (web development)]]
+[[https://github.com/DamienCassou/eslint-disable-rule/tree/7d4cc05d336fbc465f91a87b38bf360efaf76fcf
+][eslint-disable-rule package]]
+
 * Header                                                             :ignore:
   :PROPERTIES:
   :CUSTOM_ID: Header
@@ -16,7 +58,7 @@
 # blog:header
 #+TOC: headlines 2
 
-* Hello World!
+* TODO Hello World!
   :PROPERTIES:
   :CUSTOM_ID: Hello-World
   :END:
@@ -50,7 +92,7 @@
           <input v-model="yourName" placeholder="Enter a name here">
 
           <!-- ⟨3⟩ Actually use the “yourName” value here,
-               *whenever* it is updated! -->
+               ,*whenever* it is updated! -->
           <h1>Hello {{yourName.toUpperCase()}}!</h1>
       </div>
 
@@ -93,6 +135,30 @@ values. (/Hint!/ Use ~Number(x)~ to convert a string ~x~ to a number.)
   the ~id~-dentifier attribute specifies which HTML element
   views an app.
 
+** TODO Vue DevTools
+
+CMD+
+
+~⌘ ⌥ i~ opens the usual developer tools, but now there is a ‘Vue’ tab.
+
+
+
+
+- the Inspector to display debugging information in a structured way (for
+  example inspecting a component),
+  + The Inspector
+    Here you can select components and inspect their state.
+  + E.g., you can edit the properties of an app to try things right away.
+
+
+- the Timeline to track different kinds of data over time such as events.
+
+  The Timeline
+  Here you can see the events coming from your application in real-time. It includes mouse and keyboard events, component events, performance flamecharts...
+
+
+On the left side of the top bar, you can find a new App Selector. The devtools are now scoped to a specific selected app and can even inspect apps inside iframes!
+
 * Vue.js makes HTML into a language with variables and control flow
 CLOSED: [2022-03-23 Wed 08:57]
   :PROPERTIES:
@@ -108,6 +174,8 @@ etc for Booleans.  Later we'll see that functions can be defined in an
 associated /controller,/ then used in the /view/.
 # As with HTML+JS, functions can be defined
 # within src_html[:exports code]{<script>} tags.
+
++ Note: ~v-𝒳="..."~ takes any valid JavaScript expression within its quotes.
 
 # +latex: {\color{white} hello}
 
@@ -129,6 +197,7 @@ associated /controller,/ then used in the /view/.
       Count: {{count}}
 
       <!-- Inline multiple actions; only works with proper v-model variables; i.e. not “love” above. -->
+      <!-- “v-on:𝒳” may be abbreviated to “@𝒳”. -->
       <!-- “age” is declared below in “data”. -->
       <label> <input type="checkbox" v-model="isItOn" @click="count += 40, age += 2" /> {{ isItOn }} </label>
 
@@ -191,7 +260,7 @@ associated /controller,/ then used in the /view/.
         </li>
       </ul>
     <!-- Always refers to whatever is CURRENTLY the first item in “todos”. -->
-    <a :href=`https://www.google.com/search?q=${todos[0].text}`>I'm feeling lucky!</a>
+    <a :href="'https://www.google.com/search?q=' + todos[0].text">I'm feeling lucky!</a>
     </div>
     <script>
      Vue.createApp({
@@ -242,13 +311,16 @@ is falsy, the HTML element is removed from the DOM; otherwise it's added to the
 DOM.  In contrast, src_emacs-lisp[:exports code]{v-show} merely turns off the display.  ([[https://vuejs.org/guide/essentials/conditional.html#v-if-vs-v-show][~v-if~ vs
 ~v-show~]]). There are also =v-else= and =v-else-if=.
 
-src_html[:exports code]{<!-- TODO APP. v-bind:𝒳 ≈ :𝒳 -->}
-Vue.js provides HTML directives that “already exist” but /know how to evaluate
-expressions/; e.g., src_C[:exports code]{<a href="{{expr}}">Go!</a>} would /not/
-evaluate src_emacs-lisp[:exports code]{expr}, for that we use =<a v-bind:href=`${expr}`>Go!</a>=
-*with backticks* (ES6 templates). Since src_emacs-lisp[:exports code]{v-bind:} is
-so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
-:href=`${expr}`>Go!</a>}.
+src_html[:exports code]{<!-- TODO APP. v-bind:𝒳 ≈ :𝒳 -->} Vue.js provides HTML
+directives that “already exist” but /know how to evaluate expressions/; e.g.,
+src_C[:exports code]{<a href="{{expr}}">Go!</a>} would /not/ evaluate src_emacs-lisp[:exports code]{expr},
+for that we use ~<a v-bind:href='expr'>Go!</a>~. Since src_emacs-lisp[:exports code]{v-bind:} is so
+useful, there is a brief alias: src_emacs-lisp[:exports code]{<a :href='expr'>Go!</a>}.
+For example, ~:placeholder="'Hello ' + prompt"~ is the same as
+~:placeholder="`Hello ${prompt}`"~, which uses JS Template Literals.
+
+/Just as {{mustaches}} evaluate JS within content, ~:𝒳~ evaluates JavaScript
+expressions within *attributes*./
 
 ( [[https://docs.w3cub.com/vue~3/guide/migration/filters][Filters are removed from Vue 3.0 and no longer supported.]] )
 
@@ -278,10 +350,39 @@ so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
 </script>
 #+end_src
 
+For multiple classes, we use the syntax
+~:class="[C1, ..., Cn]]"~ to attach /all/ classes Cᵢ; or
+~:class="{'C1': E1, ..., 'Cn': En}"~~,
+to attache all the classes =Cᵢ= /for which/ the expression ~Eᵢ~ is not-falsy.
+
+
+Make a table whose rows alternate, say gray and white.
++ We can do this by using the ~(item, index) in items~ syntax and
+  adding a class binding depending on the parity of ~index~.
+
+  Then, briefly: Compare with a raw CSS approach.
+
+
+
+In vueJs you can have both statically and dynamically bound classes;
+e.g.,
+
+            <div v-else :class="getStatusPillColour(data.value)" class="c-badge c-badge--pill">
+
+The dynamic one adds onto the static one, it does not override it.
+
 * Computed Data ~ Reactive Variables
 :PROPERTIES:
 :CUSTOM_ID: Computed-Data-Reactive-Variables
 :END:
+
+If you have an expensive expression ℰ, which depends on model data 𝑑, then you
+can use the ~computed~ object: It will evaluate ℰ /only/ when 𝒅 changes, and
+otherwise uses the evaluated value ---thereby being more efficient.
+
+- Below our ‘expensive’ operation ℰ is ~count * 2~, so we factor that expression
+  out of our HTML and stick it in the ~computed~ object.
+
 
 #+begin_src html
 <!-- HTML is so permissive that this will load fine even though we're missing <html> and <body> tags. -->
@@ -298,6 +399,143 @@ so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
  }).mount('#app')
 </script>
 #+end_src
+
+* Axios: Movie Searching App
+
+We'll see how we can use the ~mounted~ property of the configuration object to
+fetch data for our applications. We will set initial props and then have these
+updated with the returned data from our HTTP call.
+
+Instructor: [0:00] In most cases, we're going to fetch data from an API and update our UI based on that data. Let's do that for our ticketTypes here. We're going to use the fetching library, Axios. Let's find out what package version that is.
+
+[0:13] If we go to unpkg.com and if we search for Axios, it will give us the up-to-date version, so /distribution/Axios, we copy that URL. Back in our index.html, we're going to import that script. Now we can see that this is available as a global object that we can use on our code.
+
+[0:31] Let's set our ticketTypes to an empty array, then we're going to add a mounted() function, and this function will be executed whenever the component has been mounted. At this point, we want to axios.get() and the URL to where I have my data. Once that's happened, we want to take the response and set this.ticketTypes to the response.
+
+[0:56] Let's check our Vue application. We can see our root components. Our ticketTypes has those three objects in it. We don't have that mounted. Let's comment out that. We can see there are no ticket types. It's that empty array. We do have that. We fetch the data from GitHub and render our AUI based on that data.
+
+#+begin_src html
+<script src="https://unpkg.com/vue@3" type="text/javascript"></script>
+<!-- This gives us an “axios” object that we can use in our JavaScript. -->
+<script src="https://unpkg.com/axios@0.2.1/dist/axios.min.js"></script>
+
+<div id="MovieSearcher">
+  <input v-model="query" placeholder="Search Ghibli Films!">
+  <h1 v-if="error"> {{ error }} </h1>
+  <ul v-else>
+    <li v-for="item in films">
+        <h1>{{item.title}}</h1>
+        <img :src="item.image" width="300" height="300"/>
+        {{item.description}}
+    </li>
+  </ul>
+</div>
+
+<script>
+ Vue.createApp({
+     data() { return { items: [], query: '', error: null } },
+     computed: { films () { return this.items.filter(it => it.title.toLowerCase().includes(this.query.toLowerCase())) } },
+     mounted() {
+         // https://raw.githubusercontent.com/doingandlearning/vue-fundamentals/main/data.json
+         // To see the error, just add 123 to the end of the URL, thereby breaking it.
+         axios.get("https://ghibliapi.herokuapp.com/films").then(res => this.items = res).catch(err => this.error = "Sorry, we're having trouble right now.")
+     }
+ }).mount('#MovieSearcher')
+</script>
+#+end_src
+
+We'll handle any fetching errors using the .catch() property of the axios promise. We'll also add some indication for our users to let them know that we had a problem.
+
+We'll do this by setting an error data property to true when we have an error
+and conditionally render an error message to the user.
+
+Instructor: [0:00] How are we going to handle if the API fails or there's an error in the fetch? Axios is promise-based, so we can use the .catch() function to be able to do something with our error.
+
+[0:13] If there is an error, we will .catch() the error. For the moment, let's console.log() the error, and let's break the URL. In our console, we see it's a "404 Not Found," so we are getting an error, but for our user, there's nothing to tell them that something's gone wrong. There are a number of ways that we could approach telling our user something's wrong.
+
+[0:38] We could add an error Boolean, and if there is an error rather than console logging, we can say, this.error = true, and then in our UI where this ticket types components being rendered, so here, we could add a heading say "History," that only shows if there's an error and say, "Sorry, we're having trouble getting the ticket types. Try again later."
+
+[1:16] If there's a correct data fetch, we get the ticket types. If there's not,
+we get an helpful error message for our user.
+
+* TODO [vue files] Install the vue/cli NOTE:I'm here!
+
+One way that we have built this application is fine for us learning Vue, it's not the way we will generally build. We use the Vue CLI, or command-line interface, and the build tools that come along with that. How do we do that?
+
+We'll see how to install the vue/cli and how to start a project using it. We'll discuss the boilerplate that is provided by this bootstrapping process.
+
+#+begin_src shell
+# npm install -g @vue/cli # Install it “g”lobally
+vue --version # Check that you indeed installed it
+# vue create hola -d # Make a new app, named “hola”; using “d”efault presets
+cd hola; npm run serve # Start the new app; see it in the browser at: http://localhost:8080/
+#+end_src
+
+We get a new folder, ~hola~, that has a bunch of stuff.  Most notably:
+- ~public/index.html~ is where our Vue application will be mounted.
+- ~src/main.js~ which is our starting JavaScript point, and it imports from ~app.vue~.
+  - ~.vue~ files are essentially ~.html~ files, except they don't have a ~<head>~ or
+    ~<body~ tags. (In-fact, plain HTML is so permissive that you can make an HTML file
+    without those tags and it'll still load fine.)
+
+    ~.vue~ files have
+    1. a ~<template>~ element, which is the HTML that makes up the component
+    2. a ~<script>~ element, which is the JavaScript that makes up the component's
+       logic
+    3. a ~<style>~ element, which is the CSS for the component.
+       - These are usually ~scoped~: They only apply to the component being defined.
+
+
+
+TODO:Make a “h”ello world vue app
+- I.e., take the hello-world from the very first above and render that into a
+  vue app and run it with the vue cli.
+
+
+As shown below, ~src/main.js~ gets your app from ~src/app.vue~ and mounts it to an
+HTML element identified as ~app~ in ~public/index.html~.
+#+begin_src javascript
+// src/main.js file contents
+import App from './App.vue'
+createApp(App).mount('#app')
+#+end_src
+
+Open up ~src/app.vue~ and replace its contents with the following.
+  #+begin_src html :tangle del/index.html
+<template>
+  <!-- ⟨2⟩ The *value* of this text box is named “yourName” -->
+  <input v-model="yourName" placeholder="Enter a name here">
+
+  <!-- ⟨3⟩ Actually use the “yourName” value here,
+       ,*whenever* it is updated! -->
+  <h1>Hello {{yourName.toUpperCase()}}!</h1>
+</template>
+
+<script>
+export default {
+    name: 'App',
+    data() {
+        return {
+            yourName: 'Jason'
+        }
+    }
+}
+</script>
+
+<style>
+  input { color: darkcyan; font-size: 14pt }
+</style>
+#+end_src
+
+Notice how this is /very/ similar to our very first “hello world” HTML file, of
+these VueJS notes.
+
+* TODO Ecosystem
+- [[https://router.vuejs.org/][vue-router]]
+- [[https://vuex.vuejs.org/][vuex]] ~ pinia
+- [[https://github.com/vuejs/vue-devtools#vue-devtools][vue-devtools]]
+- [[https://vue-loader.vuejs.org/][vue-loader]]
+- [[https://github.com/vuejs/awesome-vue][awesome-vue]]
 
 * Watchers
 :PROPERTIES:
@@ -320,7 +558,89 @@ so useful, there is a brief alias: src_emacs-lisp[:exports code]{<a
 </script>
 #+end_src
 
-* COMMENT OLD AngularJS Notes
+* Components: Reusable logic & styling
+
+We send data to a component with the usual bind syntax, ~:𝒳~, and we get
+information from a component via event syntax ~@𝒳~.
+
+Things we do below:
+- Build a Component and Pass Props to It in Vue
+- Create and Manipulate State within a Vue Component by Defining Methods and Properties
+- Send an Emit Event with Data From a Vue Component to It's Parent
+
+#+begin_src html
+<div id="Hola">
+    Meal cart: {{cartCount}}
+    <show-it v-for="m in meals" :name="m.name" :description="m.description" :instock="m.instock" @sale-happened="updateCartCount" />
+    <!-- This is a custom event that we make below, in the buy() function. -->
+    <!-- It lets us know that there is a @sale-happened event, which may have some associated data, which we can use to update our cart count. -->
+    />
+</div>
+
+<script src="https://unpkg.com/vue@3" type="text/javascript"></script>
+<script type="text/javascript">
+
+ /* We can put this in a file; and use a <script> tag instead. */
+ let app = Vue.createApp({
+     data() {
+         return { meals: [ {name: 'Pizza', instock: 5, description: 'Cheesey, with pineapple!'}
+                         , {name: 'Butter Chicken', instock: 7, description: 'So smooth; with warm nan!'}
+                         , {name: 'Falafel', instock: 21, description: 'Yummy & vegan-friendly!'}
+         ], cartCount: 0}
+     },
+     methods: { updateCartCount(howmany, name) { this.cartCount += howmany } }
+ })
+
+ /* We can put this in a file; and use a <script> tag AFTER the above one. */
+ app.component('show-it', { // Warning: If you use the camelCase name 'showIt', you must still use the kebab-case name 'show-it' above in the HTML.
+     // Name:Type pairs ---these are the “arguments” to the component.
+     props: { name: String, description: String, instock: Number },
+                            template: `<div>
+                                <h1> {{name}} </h1>
+                                <p> {{description}} </p>
+                                <!-- Whatever the user selects will be saved in “howManyToBuy”, for this component -->
+                                <!-- Note that “select”s are not ‘@clicked’, but ‘@changed’. -->
+                                <select v-model="howManyToBuy" @change="buy">
+                                    <option value="0"> 0 </option> <!-- Show possibility of zero tickets to buy. -->
+                                    <!-- Show as many tickets as there are avilable; starting from 1. -->
+                                    <option v-for="n in instock"> {{n}} </option>
+                                </select>
+                                ─ Local Cart: {{howManyToBuy}}
+                            </div>`,
+                            data() { return { howManyToBuy: 0 } },
+                            emits: ["sale-happened"],
+                            /* The buy() method tells the parent component that some event (named sale-appended) has happened in this component */
+                            methods: { buy() { console.log("A sale was made!"); this.$emit('sale-happened', Number(this.howManyToBuy), this.name); } }
+                           /* In the VueDevTools timeline view, every change to a select emits a new event, named saleHappended. */
+ })
+
+ /* This can remain here, after the above two script tags. */
+ app.mount('#Hola')
+</script>
+#+end_src
+
+/3-line Exercise!/ Add a button to the ~template~ that says “Add to cart”.  Then, alter the
+component logic so that when this button is clicked, the number of meals
+leftover decreases ---and the dropdown select is limited by the amount
+available. Finally, only show the button if the user wants to but more than 0
+meals.  Hint: Add to ~data()~, and possibly introduce a ~methods~ object ---or do
+the calculations inline an ~@click~.
+:Solution_actual_changes:
+⋮
+<option v-for="n in remainingStock"> {{n}} </option>
+⋮
+<button v-if="howManyToBuy > 0" @click="cart += Number(howManyToBuy), remainingStock -= Number(howManyToBuy)"> Add to cart </button>
+─Cart: {{cart}}
+⋮
+data() { return { howManyToBuy: 0, cart: 0, remainingStock: this.instock } }
+⋮
+:End:
+
+
+
+
+
+* COMMENT OLD Notes to incorporate above
 :PROPERTIES:
 :CUSTOM_ID: COMMENT-OLD-AngularJS-Notes
 :END:
